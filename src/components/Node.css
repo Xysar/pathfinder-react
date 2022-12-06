@@ -1,0 +1,13 @@
+.node {
+  width: 20px;
+  height: 20px;
+  border: solid grey 1px;
+}
+
+.start-node {
+  background-color: lightgreen;
+}
+
+.finish-node {
+  background-color: red;
+}
