@@ -2,15 +2,29 @@
   width: 20px;
   height: 20px;
   border: solid grey 1px;
+  background-color: white;
 }
 
 .start-node {
   background-color: lightgreen;
 }
-
 .finish-node {
   background-color: red;
 }
 .visited-node {
-  background: blue;
+  animation-duration: 1s;
+  animation-name: visit;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  background-color: white;
+}
+
+@keyframes visit {
+  from {
+    background-color: white;
+  }
+  to {
+    background-color: blue;
+  }
 }

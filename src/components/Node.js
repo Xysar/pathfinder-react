@@ -3,17 +3,21 @@ import uniqid from "uniqid";
 import "./Node.css";
 
 function Node({ nodeInfo }) {
-  let className = "node";
+  let className = "";
   if (nodeInfo.isStart) {
     className += " start-node";
   }
   if (nodeInfo.isFinish) {
     className += " finish-node";
   }
-  if (nodeInfo.display) {
-    className += " visited-node";
-  }
-  return <div className={className} key={uniqid()}></div>;
+
+  return (
+    <div
+      id={`node-${nodeInfo.column}-${nodeInfo.row}`}
+      className={`node${className}`}
+      key={uniqid()}
+    ></div>
+  );
 }
 
 export default Node;

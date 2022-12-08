@@ -47,23 +47,18 @@ function Pathfinder() {
   }
   //function animateAlgorithm(grid, finalNode) {}
   function startAlgorithm() {
-    let duplicate = nodes.slice();
     let bundle = dijkstra(
-      duplicate,
+      nodes,
       nodes[startCoord.x][startCoord.y],
       nodes[finishCoord.x][finishCoord.y]
     );
-    console.log(bundle.array);
-    console.log(nodes);
     for (let i = 0; i < bundle.array.length; i++) {
       setTimeout(() => {
         let curTravelledNode = bundle.array[i];
-        let newGrid = nodes.slice();
-        curTravelledNode.display = true;
-        newGrid[curTravelledNode.column][curTravelledNode.row] =
-          curTravelledNode;
-        setNodes(() => newGrid);
-      }, 20 * i);
+        document.getElementById(
+          `node-${curTravelledNode.column}-${curTravelledNode.row}`
+        ).className = "node visited-node";
+      }, 10 * i);
     }
   }
 
