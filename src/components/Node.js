@@ -10,7 +10,9 @@ function Node({ nodeInfo }) {
   if (nodeInfo.isFinish) {
     className += " finish-node";
   }
-
+  if (nodeInfo.display) {
+    className += " visited-node";
+  }
   return <div className={className} key={uniqid()}></div>;
 }
 

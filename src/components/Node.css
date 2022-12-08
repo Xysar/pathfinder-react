@@ -11,3 +11,6 @@
 .finish-node {
   background-color: red;
 }
+.visited-node {
+  background: blue;
+}
