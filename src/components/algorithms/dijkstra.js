@@ -1,48 +1,41 @@
 function dijkstra(grid, start, end) {
-  let queue = [];
-  //start.distance = 0;
-  start.visited = true;
-  queue.push(start);
+  let queue = [start];
   let travelledNodes = [];
   while (queue.length !== 0) {
-    let cur = queue.pop();
-    travelledNodes.push(cur);
-    if (cur.row === end.row && cur.column === end.column) {
+    let cur = queue.shift();
+    if (cur.isFinish) {
       let finalNode = cur;
       return {
-        array: travelledNodes,
-        final: finalNode,
+        travelledNodes: travelledNodes,
+        finalNode: finalNode,
       };
     }
-    if (
-      cur.column + 1 < grid.length &&
-      !grid[cur.column + 1][cur.row].visited
-    ) {
-      let nextNode = grid[cur.column + 1][cur.row];
-      nextNode.visited = true;
-      nextNode.prev = cur;
-      queue.unshift(nextNode);
+    if (cur.visited || cur.isWall) {
+      continue;
     }
-    if (cur.column - 1 >= 0 && !grid[cur.column - 1][cur.row].visited) {
-      let nextNode = grid[cur.column - 1][cur.row];
-      nextNode.visited = true;
+    cur.visited = true;
+    travelledNodes.push(cur);
+    const { column, row } = cur;
+    let nextNode;
+    if (column + 1 < grid.length && !grid[column + 1][row].visited) {
+      nextNode = grid[column + 1][row];
       nextNode.prev = cur;
-      queue.unshift(nextNode);
+      queue.push(nextNode);
     }
-    if (
-      cur.row + 1 < grid[0].length &&
-      !grid[cur.column][cur.row + 1].visited
-    ) {
-      let nextNode = grid[cur.column][cur.row + 1];
-      nextNode.visited = true;
+    if (column - 1 >= 0 && !grid[column - 1][row].visited) {
+      nextNode = grid[column - 1][row];
       nextNode.prev = cur;
-      queue.unshift(nextNode);
+      queue.push(nextNode);
     }
-    if (cur.row - 1 >= 0 && !grid[cur.column][cur.row - 1].visited) {
-      let nextNode = grid[cur.column][cur.row - 1];
-      nextNode.visited = true;
+    if (row + 1 < grid[0].length && !grid[column][row + 1].visited) {
+      nextNode = grid[column][row + 1];
       nextNode.prev = cur;
-      queue.unshift(nextNode);
+      queue.push(nextNode);
+    }
+    if (row - 1 >= 0 && !grid[column][row - 1].visited) {
+      nextNode = grid[column][row - 1];
+      nextNode.prev = cur;
+      queue.push(nextNode);
     }
   }
 

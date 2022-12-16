@@ -2,20 +2,25 @@ import React, { useState, useEffect } from "react";
 import uniqid from "uniqid";
 import "./Node.css";
 
-function Node({ nodeInfo }) {
-  let className = "";
-  if (nodeInfo.isStart) {
-    className += " start-node";
+function Node({ nodeInfo, wallClick }) {
+  let { row, column, isStart, isFinish, isWall } = nodeInfo;
+
+  let extraClassName = "";
+  if (isStart) {
+    extraClassName += "start-node";
   }
-  if (nodeInfo.isFinish) {
-    className += " finish-node";
+  if (isFinish) {
+    extraClassName += "finish-node";
   }
+  //   if (isWall) {
+  //     extraClassName += "wall-node";
+  //   }
 
   return (
     <div
-      id={`node-${nodeInfo.column}-${nodeInfo.row}`}
-      className={`node${className}`}
-      key={uniqid()}
+      id={`node-${column}-${row}`}
+      className={`node ${extraClassName}`}
+      onMouseDown={() => wallClick(column, row)}
     ></div>
   );
 }

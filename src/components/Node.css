@@ -11,6 +11,9 @@
 .finish-node {
   background-color: red;
 }
+.wall-node {
+  background-color: grey;
+}
 .visited-node {
   animation-duration: 1s;
   animation-name: visit;

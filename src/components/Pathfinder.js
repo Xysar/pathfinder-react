@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import Node from "./Node";
 import uniqid from "uniqid";
 import "./Pathfinder.css";
@@ -9,7 +9,16 @@ function Pathfinder() {
   const [gridHeight, setGridheight] = useState(30);
   const [startCoord, setStartCoord] = useState({ x: 5, y: 15 });
   const [finishCoord, setFinishCoord] = useState({ x: 45, y: 15 });
-  const [nodes, setNodes] = useState(() => initiateNodes());
+  const [nodes, setNodes] = useState([]);
+  const isRunning = useRef(false);
+
+  useEffect(() => {
+    setNodes(() => initiateNodes());
+  }, []);
+
+  function toggleRunning() {
+    isRunning.current = !isRunning.current;
+  }
 
   function initiateNodes() {
     let nodeArray = [];
@@ -28,7 +37,6 @@ function Pathfinder() {
       }
       nodeArray.push(newArray);
     }
-
     return nodeArray;
   }
 
@@ -42,35 +50,97 @@ function Pathfinder() {
       isWall: false,
       isStart: false,
       isFinish: false,
-      display: false,
     };
   }
-  //function animateAlgorithm(grid, finalNode) {}
-  function startAlgorithm() {
-    let bundle = dijkstra(
-      nodes,
-      nodes[startCoord.x][startCoord.y],
-      nodes[finishCoord.x][finishCoord.y]
-    );
-    for (let i = 0; i < bundle.array.length; i++) {
+
+  function animateAlgorithm(travelledNodes, finalNode) {
+    for (let i = 0; i <= travelledNodes.length; i++) {
+      if (i === travelledNodes.length) {
+        setTimeout(() => {
+          toggleRunning();
+        }, 12 * i);
+        return;
+      }
       setTimeout(() => {
-        let curTravelledNode = bundle.array[i];
-        document.getElementById(
+        let curTravelledNode = travelledNodes[i];
+        const nodeClassName = document.getElementById(
           `node-${curTravelledNode.column}-${curTravelledNode.row}`
-        ).className = "node visited-node";
+        ).className;
+        if (
+          nodeClassName !== "node start-node" &&
+          nodeClassName !== "node finish-node"
+        ) {
+          document.getElementById(
+            `node-${curTravelledNode.column}-${curTravelledNode.row}`
+          ).className = "node visited-node";
+        }
       }, 10 * i);
     }
   }
 
+  function startAlgorithm() {
+    if (isRunning.current) {
+      return;
+    }
+    resetGrid();
+    toggleRunning();
+    let algorithmResults = dijkstra(
+      nodes,
+      nodes[startCoord.x][startCoord.y],
+      nodes[finishCoord.x][finishCoord.y]
+    );
+    animateAlgorithm(
+      algorithmResults.travelledNodes,
+      algorithmResults.finalNode
+    );
+  }
+
+  function resetGrid() {
+    if (isRunning.current) {
+      return;
+    }
+    const newGrid = nodes.slice();
+    for (let i = 0; i < gridWidth; i++) {
+      for (let j = 0; j < gridHeight; j++) {
+        let nodeClassName = document.getElementById(`node-${i}-${j}`).className;
+        newGrid[i][j].visited = false;
+        if (
+          nodeClassName !== "node start-node" &&
+          nodeClassName !== "node finish-node" &&
+          nodeClassName !== "node wall-node"
+        ) {
+          document.getElementById(`node-${i}-${j}`).className = "node";
+        }
+      }
+    }
+  }
+
+  //mouse events
+
+  function handleMouseEvent(col, row) {
+    let hoveredNodeClassName = (document.getElementById(
+      `node-${col}-${row}`
+    ).className = "node wall-node");
+    nodes[col][row].isWall = true;
+    console.log(col + " " + row);
+  }
+
   return (
     <div className="container">
-      <button onClick={() => startAlgorithm()}> Start Algorithm</button>
+      <div id="toolbar">
+        <button onClick={() => startAlgorithm()}> Start Algorithm</button>
+        <button onClick={() => resetGrid()}> Reset Grid </button>
+      </div>
       <div id="grid">
         {nodes.map((row) => {
           return (
             <div className="column" key={uniqid()}>
               {row.map((node) => (
-                <Node key={uniqid()} nodeInfo={node}></Node>
+                <Node
+                  key={uniqid()}
+                  wallClick={handleMouseEvent}
+                  nodeInfo={node}
+                ></Node>
               ))}
             </div>
           );
