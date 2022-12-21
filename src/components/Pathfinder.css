@@ -10,6 +10,26 @@
   gap: 20px;
   justify-content: center;
 }
+
+.buttons {
+  border: none;
+  background-color: #2070dd;
+  padding: 15px;
+  margin-top: 25px;
+  font-size: 20px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.reset-grid-button {
+  background-color: #9e0603;
+}
+
+.reset-walls-button {
+  background-color: #eda005;
+}
+
 #grid {
   display: grid;
   grid-template-columns: repeat(50, 20px);

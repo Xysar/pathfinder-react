@@ -17,6 +17,7 @@ function Pathfinder() {
   const isHoldingFinish = useRef(false);
   const currCol = useRef(0);
   const currRow = useRef(0);
+
   useEffect(() => {
     setNodes(() => initiateNodes());
   }, []);
@@ -61,9 +62,11 @@ function Pathfinder() {
   function animateAlgorithm(travelledNodes, finalNode) {
     for (let i = 0; i <= travelledNodes.length; i++) {
       if (i === travelledNodes.length) {
-        setTimeout(() => {
-          animateFinalPath(getFinalPath(finalNode));
-        }, 10 * i);
+        if (finalNode) {
+          setTimeout(() => {
+            animateFinalPath(getFinalPath(finalNode));
+          }, 10 * i);
+        }
         return;
       }
       setTimeout(() => {
@@ -281,9 +284,27 @@ function Pathfinder() {
   return (
     <div className="container">
       <div id="toolbar">
-        <button onClick={() => startAlgorithm()}> Start Algorithm</button>
-        <button onClick={() => resetGrid()}> Reset Grid </button>
-        <button onClick={() => resetWalls()}> Reset Walls </button>
+        <button
+          className="buttons start-button"
+          onClick={() => startAlgorithm()}
+        >
+          {" "}
+          Start Algorithm
+        </button>
+        <button
+          className="buttons reset-grid-button"
+          onClick={() => resetGrid()}
+        >
+          {" "}
+          Reset Grid{" "}
+        </button>
+        <button
+          className="buttons reset-walls-button"
+          onClick={() => resetWalls()}
+        >
+          {" "}
+          Reset Walls{" "}
+        </button>
       </div>
       <div id="grid" onMouseLeave={() => handleMouseLeave()}>
         {nodes.map((row) => {

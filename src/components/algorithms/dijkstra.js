@@ -40,8 +40,8 @@ function dijkstra(grid, start, end) {
   }
 
   return {
-    array: travelledNodes,
-    final: null,
+    travelledNodes: travelledNodes,
+    finalNode: null,
   };
 }
 
