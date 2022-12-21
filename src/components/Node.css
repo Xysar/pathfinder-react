@@ -1,8 +1,11 @@
 .node {
   width: 20px;
   height: 20px;
-  border: solid grey 1px;
+  margin: 0px;
+  padding: 0px;
+  border: solid #bbbbbb 1px;
   background-color: white;
+  box-sizing: border-box;
 }
 
 .start-node {
@@ -13,6 +16,9 @@
 }
 .wall-node {
   background-color: grey;
+}
+.final-path-node {
+  background-color: yellow;
 }
 .visited-node {
   animation-duration: 1s;
